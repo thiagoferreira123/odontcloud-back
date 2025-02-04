@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .large-title {
+      font-family: 'Mulish', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: #777;
+    }
+
+    .title {
+      font-family: 'Mulish', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .title-dark {
+      font-family: 'Mulish', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: #777;
+    }
+
+    .bg-light {
+      background-color: #f3f3f4;
+    }
+
+    .small-title {
+      font-family: 'Mulish', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: #777;
+    }
+
+    .mb-1 {
+      margin-bottom: 5px;
+    }
+
+    .mb-2 {
+      margin-bottom: 10px;
+    }
+
+    .mt-1 {
+      margin-top: 5px;
+    }
+
+    .mt-2 {
+      margin-top: 10px;
+    }
+
+    .circle {
+      height: 6px;
+      width: 6px;
+      background-color: #0eb0f2;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .bg-primary {
+      background-color: #0eb0f2;
+    }
+
+    .text-white {
+      color: #fff !important;
+    }
+
+    .text-bold {
+      font-weight: 800;
+    }
+
+    .card {
+      background-color: #f3f3f4;
+      padding: 10px;
+      padding-bottom: 1px;
+      border-radius: 8px;
+    }
+    body {
+      font-family: 'Mulish', sans-serif;
+      margin-bottom: 100px;
+      margin-top: 100px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #777;
+      margin: 30px
+    }
+
+    .footer {
+      page-break-inside: avoid;
+    }
+
+    .assinatura-bx {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 1rem;
+      height: 100px;
+      width: 260px;
+    }
+
+    .assinatura-bx img {
+      max-height: 96px;
+      max-width: 260px;
+      height: 100%;
+      width: 260px;
+      position: absolute;
+      right: auto;
+    }
+
+    .border-table-light {
+      border: 1px solid #fff;
+      padding: 8px;
+    }
+
+    .rounded-top {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+    }
+
+    .rounded-top-left {
+      border-top-left-radius: 12px;
+    }
+
+    .rounded-top-right {
+      border-top-right-radius: 12px;
+    }
+
+    .rounded-bottom {
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+    }
+
+    .rounded-bottom-left {
+      border-bottom-left-radius: 12px;
+    }
+
+    .rounded-bottom-right {
+      border-bottom-right-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  {{!-- Logo marca do local de atendimento --}}
+  <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top:25px">
+    {{#if clinic.clinic_logo_link}}
+      <img src='{{clinic.clinic_logo_link}}' height='85px' />
+    {{else}}
+      <span class='large-title'>{{clinic.clinic_full_name}}</span>
+    {{/if}}
+  </div>
+
+  {{!-- Foto e dados do paciente --}}
+  <div class='mb-2' style="display: flex; justify-content: end; align-items: center; height: 100%; margin-top:25px">
+    <span class='title-dark'>Orçamento nº: #{{budget.budget_number}}</span>
+  </div>
+
+  {{!-- Foto e dados do paciente --}}
+  <div class='mb-2'>
+    <span class='large-title'>Dados do paciente</span>
+  </div>
+  <div>
+    <span class='title-dark'>Nome do cliente:</span>
+    <span class='dados'>{{patient.patient_full_name}}</span>
+    {{#if patient.age}}
+    | <span class='title-dark'>Idade:</span>
+      <span class='dados'>{{patient.age}}</span>
+    {{/if}}
+    {{#if patient.patient_phone}}
+    | <span class='title-dark'>Celular:</span>
+      <span class='dados'>{{patient.patient_phone}}</span>
+    {{/if}}
+  </div>
+  {{#if patient.patient_email}}
+    <div>
+      <span class='title-dark'>E-mail:</span>
+      <span class='dados'>{{patient.patient_email}}</span>
+    </div>
+  {{/if}}
+  {{#if professional.professional_full_name}}
+    <div>
+      <span class='title-dark'>Dentista responsável:</span>
+      <span class='dados'>{{professional.professional_full_name}}</span>
+    </div>
+  {{/if}}
+
+  <br><br>
+
+  {{!-- Procedimentos --}}
+  {{#if budget.carePlan.procedures}}
+    <div style="width: 100%;page-break-inside: avoid;">
+      <div class='mb-2'>
+        <span class='large-title'>Procedimentos</span>
+      </div>
+      <div class='mb-1 mt-2'>
+        <table style="border-collapse: collapse; width: 100%;page-break-inside: avoid;">
+          <thead>
+            <tr class="bg-primary text-white text-bold">
+              <td class="title border-table-light rounded-top-left">
+                Dentes
+              </th>
+              <td class="title border-table-light">
+                Procedimento
+              </th>
+              <td class="title border-table-light rounded-top-right">
+                Valor
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each budget.carePlan.procedures}}
+              <tr class="bg-light">
+                {{#if @last}}
+                  <td class="border-table-light rounded-bottom-left">
+                {{else}}
+                  <td class="border-table-light">
+                {{/if}}
+                  {{procedure_teeth}}
+                </td>
+
+                <td class="border-table-light">
+                  {{procedure_name}}
+                </td>
+
+                {{#if @last}}
+                  <td class="border-table-light rounded-bottom-right">
+                {{else}}
+                  <td class="border-table-light">
+                {{/if}}
+                  {{procedure_price}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {{/if}}
+
+  <br><br>
+
+  <div style="width: 100%;page-break-inside: avoid;">
+    {{!-- Forma de pagamento --}}
+    <div class='mb-2'>
+      <span class='large-title'>Forma de pagamento</span>
+    </div>
+    <div>
+      <span class='title-dark'>Forma de pagamento:</span>
+      <span class='dados'>{{budget.budget_payment_method}} ({{budget.numberOfInstallments}}x)</span>
+    </div>
+    {{#if budget.budget_discount_value}}
+      <div>
+        <span class='title-dark'>Desconto:</span>
+        <span class='dados'>{{budget.discountContent}}</span>
+      </div>
+    {{/if}}
+
+    {{!-- Parcelas --}}
+    {{#if budget.paymentHistorics}}
+      <div class='mb-1 mt-2'>
+        <table style="border-collapse: collapse; width: 100%;page-break-inside: avoid;">
+          <thead>
+            <tr class="bg-primary text-white text-bold">
+              <td class="title border-table-light rounded-top-left">
+                Parcelas
+              </th>
+              <td class="title border-table-light">
+                Data
+              </th>
+              <td class="title border-table-light rounded-top-right">
+                Valor
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each budget.paymentHistorics}}
+              <tr class="bg-light">
+                {{#if @last}}
+                  <td class="border-table-light rounded-bottom-left">
+                {{else}}
+                  <td class="border-table-light">
+                {{/if}}
+                  {{payment_description}}
+                </td>
+
+                <td class="border-table-light">
+                  {{parseIsoDateToBrDate payment_due_date}}
+                </td>
+
+                {{#if @last}}
+                  <td class="border-table-light rounded-bottom-right">
+                {{else}}
+                  <td class="border-table-light">
+                {{/if}}
+                  {{payment_installments_value}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    {{/if}}
+  </div>
+
+  <br>
+
+  <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; margin-top:25px">
+    <span class="large-title">Valor total:</span>
+    <span class="large-title">{{parseToBrValue budget.budget_value}}</span>
+  </div>
+
+  <br><br>
+
+  <div class="footer" style="display: flex; flex-direction: column; justify-content-center; align-items: center; text-align: center">
+    <div style='width: 100%; floating:right'>
+      <div class="assinatura-bx"></div>
+    </div>
+    <div>___________________________</div>
+    <div style="text-align: center">De acordo - assinatura paciente <br>
+      {{parseDateObjToBrDate budget.budget_date_creation}}
+    </div>
+  </div>
+</body>
+
+</html>

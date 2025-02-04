@@ -1,0 +1,281 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin-bottom: 100px;
+}
+
+/* .highlight-title {
+      color: {$highlight_color};
+      font-family: 'Montserrat-Bold';
+      width:100%;
+      clear: left;
+      font-size: 12px;
+      text-transform: uppercase;
+  } */
+
+span.tb-nome-alimento {
+  color: #141414;
+  font-size: 12px;
+}
+
+.dados {
+  font-family: 'Montserrat-Medium';
+  font-size: 12px;
+}
+
+.clear-float {
+  clear: left;
+}
+
+/* .horario-refeicao{
+      font-size: 12px;
+      font-family: 'Montserrat-Bold';
+      text-transform: uppercase;
+      color: {$highlight_color};
+  } */
+
+/* .dot {
+      height: 5px !important;
+      width: 5px !important;
+      background-color: {$highlight_color};
+      border-radius: 2px;
+      display: inline-block;
+      margin-right: 5px;
+      padding-right: unset !important;
+  } */
+
+footer {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  bottom: 1px;
+  margin: 0 auto;
+}
+
+footer span {
+  font-size: 11px;
+  color: #777;
+  font-size: 10px !important;
+  font-family: 'Montserrat-Medium' !important;
+}
+
+.text-line-assing {
+  display: block;
+  text-align: center;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.bold {
+  font-family: 'Montserrat-Bold' !important;
+}
+
+.bbld {
+  font-family: 'Montserrat-Bold' !important;
+}
+
+.odd td {
+  background-color: #ffffff;
+  font-family: 'Montserrat-Medium' !important;
+}
+
+.even td {
+  background-color: #ffffff;
+  font-family: 'Montserrat-Medium' !important;
+}
+
+.th-grupo,
+.td-grupo {
+  width: 10%;
+  text-align: center !important;
+  font-weight: 600 !important;
+  padding-right: 5px;
+}
+
+.dias {
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.cmmt-bx {
+  padding-right: 8px;
+  word-wrap: break-word;
+  background: rgba(243, 243, 244, 1);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.justify {
+  text-align: justify !important;
+}
+
+/* .highlight{
+      color: {$highlight_color};
+      font-family: 'Montserrat-Medium';
+      font-weight: 600 !important;
+      font-size: 12px;
+  } */
+
+.c-20 {
+  width: 19.9%;
+  display: inline-block;
+}
+
+.c-40 {
+  width: 39%;
+  display: inline-block;
+}
+
+.c-30 {
+  width: 29%;
+  display: inline-block;
+}
+
+.c-50 {
+  width: 49%;
+  display: inline-block;
+}
+
+.c-70 {
+  width: 69%;
+  display: inline-block;
+}
+
+.c-60 {
+  width: 59%;
+  display: inline-block;
+}
+
+.c-80 {
+  width: 79%;
+  display: inline-block;
+}
+
+.c-100 {
+  width: 100%;
+  display: inline-block;
+}
+
+.m-l-25 {
+  margin-left: 24.5%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.line-separator {
+  border-bottom: 1px solid #141414;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  font-size: 1.05em;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  font-family: 'Montserrat-Medium';
+}
+
+.line-separator-graph {
+  border-bottom: 1px solid #141414;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-size: 1.05em;
+  padding-bottom: 5px;
+  font-family: 'Montserrat-Medium';
+}
+
+.graph-img {
+  width: 100%;
+  height: 200px;
+}
+
+.pbreak {
+  page-break-after: always;
+}
+
+#imagem-assinatura {
+  width: 200px;
+  max-height: 160px;
+}
+
+.bx-assinatura {
+  border-bottom: 1px solid black;
+}
+
+.ref-table {
+  margin-bottom: 30px;
+  page-break-inside: avoid;
+}
+
+.ref-table thead th {
+  font-size: 14px;
+  padding-top: 5px;
+  padding-bottom: 10.5px;
+  padding-left: 8px;
+  font-family: 'Montserrat-Bold' !important;
+  text-align: center;
+  height: 30px;
+}
+
+.ref-table tbody td {
+  font-size: 0.8em;
+  padding-left: 8px;
+  padding-bottom: 8px;
+  padding-top: 3px;
+  color: #474747;
+}
+
+.ref-table tbody td span {
+  padding-right: 5px;
+}
+
+.table-row {
+  padding: 10px 0px !important;
+}
+
+.break {
+  page-break-after: always;
+}
+
+.table-row:first-child {
+  padding-top: 0px;
+}
+
+.table-row:last-child {
+  padding-bottom: 0px;
+}
+
+.ref-table tbody td ul {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 30px;
+  list-style: none;
+}
+
+.ref-table tbody td ul li:first-child {
+  padding-top: 10px;
+}
+
+.ref-table tbody td li {
+  padding: 5px 0px;
+  line-height: 9px;
+}
+
+/* .text-hl {
+      color: {$highlight_color};
+  } */
+
+.logo-container {
+  width: 100%;
+  text-align: center;
+}
+
+.text-break {
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+
+  white-space: wrap;
+}

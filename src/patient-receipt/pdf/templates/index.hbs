@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .title {
+      font-family: 'Mulish', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: #777;
+    }
+
+    .small-title {
+      font-family: 'Mulish', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: #777;
+    }
+
+    .mb-1 {
+      margin-bottom: 5px;
+    }
+
+    .mb-2 {
+      margin-bottom: 10px;
+    }
+
+    .mt-1 {
+      margin-top: 5px;
+    }
+
+    .mt-2 {
+      margin-top: 10px;
+    }
+
+    .circle {
+      height: 6px;
+      width: 6px;
+      background-color: {{clinic.primaryColor}};
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+    .card {
+      background-color: #f3f3f4;
+      padding: 10px;
+      padding-bottom: 1px;
+      border-radius: 8px;
+    }
+    body {
+      font-family: 'Mulish', sans-serif;
+      margin-bottom: 100px;
+      margin-top: 100px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #777;
+      margin: 30px
+    }
+
+    .footer {
+      page-break-inside: avoid;
+    }
+
+    .assinatura-bx {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 1rem;
+      height: 100px;
+      width: 260px;
+    }
+
+    .assinatura-bx img {
+      max-height: 96px;
+      max-width: 260px;
+      height: 100%;
+      width: 260px;
+      position: absolute;
+      right: auto;
+    }
+
+    .border-table-text-start {
+      border: 1px solid #f3f3f4;
+      padding: 8px;
+      text-align:start
+    }
+
+    .border-table-light {
+      border: 1px solid #f3f3f4;
+      padding: 8px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  {{!-- Logo marca do local de atendimento --}}
+  <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top:25px">
+    <img src='{{clinic.clinic_logo_link}}' height='85px' />
+  </div>
+
+  {{!-- Título --}}
+  <div class='mb-1 mt-2' style="display: flex; justify-content: center; width: 100%;">
+    <span class='title mb-2'>Recibo de Consulta Nutricional</span>
+  </div>
+
+  <br>
+
+  <div style="text-align: justify;">
+    Recebemos de {{receipt.receipt_patient_name}}, portador(a) do CPF/CNPJ {{receipt.receipt_cpf_or_cnpj}}, a quantia de {{receipt.receipt_receipt_value}} ({{receipt.receipt_value_in_extension}}) referente: {{receipt.receipt_referent_a}}<br><br>
+
+    Dados do Emitente:<br>
+    - Nome: {{clinic.clinic_full_name}}<br>
+    - CPF/CNPJ: {{clinic.clinic_cnpj_or_cpf}}<br>
+    - Endereço: Rua {{receipt.receipt_street}}, nº: {{receipt.receipt_number}}<br>
+    - Bairro: {{receipt.receipt_neighborhood}}<br>
+    - Cidade: {{receipt.receipt_city}}<br>
+    - Estado: {{receipt.receipt_state}}<br>
+    - CEP: {{receipt.receipt_cep}}.<br><br>
+
+    Este recibo é válido como comprovação do pagamento pelo serviço prestado.
+</div>
+
+
+  <br>
+  <br>
+
+  <div class="footer" style="display: flex; flex-direction: column; justify-content-center; align-items: center;">
+    <div style='width: 100%; floating:right'>
+      <div class="assinatura-bx">
+        {{#if clinic.clinic_signature_link}}
+      <img src='{{clinic.clinic_signature_link}}' height='100px' width="200px" style="object-fit: cover !important;" />
+      {{/if}}
+      </div>
+    </div>
+    <div>___________________________</div>
+    <div>Data: {{receipt.receipt_date_emission}}</div>
+  </div>
+</body>
+
+</html>
