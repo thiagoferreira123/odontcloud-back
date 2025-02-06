@@ -1,6 +1,13 @@
 import { Exclude } from 'class-transformer';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  OneToMany,
+} from 'typeorm';
 import { Subscription } from '../../subscription/entities/subscription.entity';
+import { WhatsappMessage } from 'src/whatsapp-message/entities/whatsapp-message.entity';
 
 @Entity('clinic')
 export class Clinic {
@@ -68,4 +75,13 @@ export class Clinic {
     eager: true,
   }) // specify inverse side as a second parameter
   subscription: Subscription;
+
+  @OneToMany(
+    () => WhatsappMessage,
+    (whatsappConfiguration) => whatsappConfiguration.clinic,
+    {
+      eager: false,
+    },
+  )
+  whatsappConfigurations: WhatsappMessage[];
 }

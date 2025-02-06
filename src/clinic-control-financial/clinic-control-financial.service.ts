@@ -94,7 +94,7 @@ export class FinancialControlService {
     });
   }
 
-  async downloadSpreadsheetByProfessionalId(
+  async downloadSpreadsheetByclinicId(
     financial_control_clinic_id: string,
     year: string,
     month: string,

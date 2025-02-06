@@ -34,6 +34,7 @@ import { CalendarWaitingListModule } from './calendar-waiting-list/calendar-wait
 import { SubscriptionModule } from './subscription/subscription.module';
 import { BudgetPdfModule } from './patient-care-plan-budget/pdf/budget-pdf.module';
 import { ClinicInventoryControlModule } from './clinic-inventory-control/clinic-inventory-control.module';
+import { WhatsappMessageModule } from './whatsapp-message/whatsapp-message.module';
 
 @Module({
   imports: [
@@ -82,6 +83,7 @@ import { ClinicInventoryControlModule } from './clinic-inventory-control/clinic-
     CardMachineModule,
     DatabaseModule,
     SubscriptionModule,
+    WhatsappMessageModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -84,14 +84,14 @@ export class FinancialControlController {
   }
 
   @Get('/download/:year/:month')
-  downloadSpreadsheetByProfessionalId(
+  downloadSpreadsheetByclinicId(
     @ClinicDecorator('clinic_id')
     financial_control_clinic_id: string,
     @Param('year') year: string,
     @Param('month') month: string,
     @Res() res: Response,
   ) {
-    return this.financialControlService.downloadSpreadsheetByProfessionalId(
+    return this.financialControlService.downloadSpreadsheetByclinicId(
       financial_control_clinic_id,
       year,
       month,
