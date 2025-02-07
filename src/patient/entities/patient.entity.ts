@@ -1,5 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { CarePlan } from '../../patient-care-plan/entities/patient-care-plan.entity';
+import { Clinic } from 'src/clinic/entities/clinic.entity';
 
 @Entity('patient')
 export class Patient {
@@ -98,4 +106,8 @@ export class Patient {
     eager: false,
   })
   carePlans: CarePlan[];
+
+  @ManyToOne(() => Clinic, (clinic) => clinic.patients)
+  @JoinColumn({ name: 'patient_clinic_id' })
+  clinic: Clinic;
 }

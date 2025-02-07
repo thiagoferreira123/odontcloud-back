@@ -15,8 +15,14 @@ import * as nodemailer from 'nodemailer';
 import * as argon2 from 'argon2';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as moment from 'moment';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
+import { Patient } from 'src/patient/entities/patient.entity';
+import { Cron } from '@nestjs/schedule';
+import { parseNumberToWhatsapp } from 'src/helpers/string-helpers';
+import { wppBotUrl } from 'src/whatsapp-message/whatsapp-message.service';
+import { PatientService } from 'src/patient/patient.service';
 
 export interface JWTBody {
   clinic_id: string;
@@ -32,6 +38,7 @@ export class ClinicService {
   constructor(
     @Inject('Clinic')
     private clinicRepository: Repository<Clinic>,
+    private readonly patientService: PatientService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -336,5 +343,95 @@ export class ClinicService {
 
     // return { ...clinic, clinic_logo_link };
     return clinic;
+  }
+
+  /**
+   * Cron jobs
+   */
+
+  // Send whatsapp to patient congratulating them on their birthday
+  // @Cron('*/10 * * * * *')
+  @Cron('0 0 7 * * *', {
+    name: 'notifications',
+    timeZone: 'America/Sao_Paulo',
+  })
+  async checkPatientBirthdays(): Promise<void> {
+    const clinics = await this.clinicRepository.find({
+      select: ['clinic_id'],
+      relations: ['whatsappConfigurations'],
+    });
+
+    const today = moment().format('MM-DD');
+
+    for (const clinic of clinics) {
+      if (
+        !clinic.whatsappConfigurations?.length ||
+        !clinic.whatsappConfigurations[0].whatsapp_message_happy_birthday
+      )
+        continue;
+
+      const patients = await this.patientService.findBirthdayPatients(
+        clinic.clinic_id,
+        today,
+      );
+
+      for (const patient of patients) {
+        if (
+          clinic.whatsappConfigurations?.length &&
+          clinic.whatsappConfigurations[0].whatsapp_message_happy_birthday
+        ) {
+          await this.sendBirthdayWhatsApp(
+            patient,
+            clinic.whatsappConfigurations[0].whatsapp_message_happy_birthday,
+          );
+        }
+      }
+    }
+  }
+
+  private async sendBirthdayWhatsApp(
+    patient: Patient,
+    whatsapp_message_happy_birthday: string,
+  ) {
+    try {
+      const firstName = patient.patient_full_name.split(' ')[0];
+
+      const message = whatsapp_message_happy_birthday.length
+        ? whatsapp_message_happy_birthday
+        : 'Olá [Patient], hoje é o seu dia! 🎉🎂';
+
+      const postData = {
+        id: patient.patient_phone
+          ? parseNumberToWhatsapp(patient.patient_phone).replace(/\D/g, '')
+          : '',
+        message: message.replaceAll('[Patient]', firstName),
+      };
+
+      fetch(`${wppBotUrl}/message/text?key=nutricionist_${patient.clinic}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(postData),
+      })
+        .then(() =>
+          console.log(`Birthday sent for ${patient.patient_full_name}`),
+        )
+        .catch(async (error) => {
+          if (error instanceof Response) {
+            return console.error(
+              `Error sending patient for ${patient.patient_full_name}`,
+              error.statusText,
+            );
+          }
+
+          console.error(
+            `Error sending patient for ${patient.patient_full_name}`,
+            'Erro desconhecido',
+          );
+        });
+    } catch (error) {
+      console.error('Error sending WhatsApp message', error);
+    }
   }
 }

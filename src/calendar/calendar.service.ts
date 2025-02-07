@@ -6,6 +6,8 @@ import { CreateCalendarAlertDTO } from '../calendar-alert/dto/create-calendar-al
 import { EmailService } from '../email/email.service';
 import * as nodemailer from 'nodemailer';
 import { parseNumberToWhatsapp } from '../helpers/string-helpers';
+import { ClinicService } from 'src/clinic/clinic.service';
+import { wppBotUrl } from 'src/whatsapp-message/whatsapp-message.service';
 
 @Injectable()
 export class CalendarService {
@@ -14,6 +16,7 @@ export class CalendarService {
     private calendarRepository: Repository<Calendar>,
     private readonly alertService: CalendarAlertService,
     private readonly emailService: EmailService,
+    private readonly clinicService: ClinicService,
   ) {}
 
   async create(
@@ -51,6 +54,22 @@ export class CalendarService {
         schedule.calendar_date,
         schedule.calendar_start_time,
         schedule.calendar_end_time,
+      );
+
+    const clinic = await this.clinicService.findOne(calendar_clinic_id);
+
+    schedule.calendar_phone &&
+      clinic.whatsappConfigurations?.length &&
+      clinic.whatsappConfigurations[0]
+        .whatsapp_message_appointment_scheduling &&
+      this.sendPatientAppointmentWhatsApp(
+        schedule.calendar_name,
+        schedule.calendar_phone,
+        schedule.calendar_date,
+        schedule.calendar_start_time,
+        calendar_clinic_id,
+        clinic.whatsappConfigurations[0]
+          .whatsapp_message_appointment_scheduling,
       );
 
     return schedule;
@@ -207,5 +226,65 @@ export class CalendarService {
       return true;
     }
     return false;
+  }
+
+  private async sendPatientAppointmentWhatsApp(
+    patientName: string,
+    patientPhone: string,
+    scheduleDate: string | Date,
+    scheduleHour: string,
+    calendar_clinic_id: string,
+    whatsapp_message_appointment_scheduling: string,
+  ) {
+    try {
+      const firstName = patientName.split(' ')[0];
+
+      if (typeof scheduleDate === 'string') {
+        scheduleDate = new Date(scheduleDate.slice(0, 10) + 'T00:00:00');
+      }
+
+      const parsedScheduleDate = scheduleDate.toLocaleDateString('pt-BR');
+
+      const message = whatsapp_message_appointment_scheduling.length
+        ? whatsapp_message_appointment_scheduling
+        : 'Olá [Paciente], sua consulta está agendada para [data] às [hora]. Qualquer dúvida, entre em contato.';
+
+      const postData = {
+        id: patientPhone
+          ? parseNumberToWhatsapp(patientPhone).replace(/\D/g, '')
+          : '',
+        message: message
+          .replaceAll('[Paciente]', firstName)
+          .replaceAll('[data]', parsedScheduleDate)
+          .replaceAll('[hora]', scheduleHour.slice(0, 5)),
+      };
+
+      fetch(
+        `${wppBotUrl}/message/text?key=nutricionist_${calendar_clinic_id}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData),
+        },
+      )
+        .then(() => console.log(`WhatsApp Alert sent for ${patientName}`))
+        .catch(async (error) => {
+          if (error instanceof Response) {
+            return console.error(
+              `Error sending patient for ${patientName}`,
+              error.statusText,
+            );
+          }
+
+          console.error(
+            `Error sending patient for ${patientName}`,
+            'Erro desconhecido',
+          );
+        });
+    } catch (error) {
+      console.error('Error sending WhatsApp message', error);
+    }
   }
 }

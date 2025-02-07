@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Subscription } from '../../subscription/entities/subscription.entity';
 import { WhatsappMessage } from 'src/whatsapp-message/entities/whatsapp-message.entity';
+import { Patient } from 'src/patient/entities/patient.entity';
 
 @Entity('clinic')
 export class Clinic {
@@ -84,4 +85,9 @@ export class Clinic {
     },
   )
   whatsappConfigurations: WhatsappMessage[];
+
+  @OneToMany(() => Patient, (patient) => patient.clinic, {
+    eager: false,
+  })
+  patients: Patient[];
 }

@@ -1,25 +1,52 @@
-import { Inject, Injectable, NotFoundException, Res } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+  Res,
+} from '@nestjs/common';
 import { Raw, Repository } from 'typeorm';
 import { Patient } from './entities/patient.entity';
 import { getPatientAge } from './helpers/paciente.helpers';
 import { Response } from 'express';
 import * as XLSX from 'xlsx';
+import { ClinicService } from 'src/clinic/clinic.service';
+import { parseNumberToWhatsapp } from 'src/helpers/string-helpers';
+import { wppBotUrl } from 'src/whatsapp-message/whatsapp-message.service';
 
 @Injectable()
 export class PatientService {
   constructor(
     @Inject('Patient')
     private patientRepository: Repository<Patient>,
+    @Inject(forwardRef(() => ClinicService))
+    private readonly clinicService: ClinicService,
   ) {}
 
   async create(
     patientDetails: Patient,
     patient_clinic_id: string,
   ): Promise<Patient> {
-    return this.patientRepository.save({
+    const patient = await this.patientRepository.save({
       ...patientDetails,
       patient_clinic_id,
     });
+
+    const clinic = await this.clinicService.findOne(patient_clinic_id);
+
+    if (
+      clinic &&
+      clinic.whatsappConfigurations &&
+      clinic.whatsappConfigurations[0] &&
+      clinic.whatsappConfigurations[0].whatsapp_message_welcome
+    ) {
+      await this.sendPatientWellcomeWhatsApp(
+        patient,
+        clinic.whatsappConfigurations[0].whatsapp_message_welcome,
+      );
+    }
+
+    return patient;
   }
 
   async findOne(patient_id: string): Promise<Patient> {
@@ -200,6 +227,72 @@ export class PatientService {
       return { statusCode: 900, message: 'Free account limit reached' };
     } else {
       return { statusCode: 200, message: 'Limit not reached' };
+    }
+  }
+
+  async findBirthdayPatients(
+    clinic_id: string,
+    today: string,
+  ): Promise<Patient[]> {
+    return this.patientRepository.find({
+      where: {
+        patient_clinic_id: clinic_id,
+        patient_birth_date: Raw(
+          (alias) => `DATE_FORMAT(${alias}, '%m-%d') = :today`,
+          { today },
+        ),
+      },
+    });
+  }
+
+  private async sendPatientWellcomeWhatsApp(
+    patient: Patient,
+    whatsapp_message_welcome: string,
+  ) {
+    try {
+      const firstName = patient.patient_full_name.split(' ')[0];
+
+      const message = whatsapp_message_welcome.length
+        ? whatsapp_message_welcome
+        : 'Olá [Paciente], hoje é o seu dia! 🎉🎂';
+
+      const postData = {
+        id: patient.patient_phone
+          ? parseNumberToWhatsapp(patient.patient_phone).replace(/\D/g, '')
+          : '',
+        message: message.replaceAll('[Paciente]', firstName),
+      };
+
+      fetch(
+        `${wppBotUrl}/message/text?key=nutricionist_${patient.patient_clinic_id}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData),
+        },
+      )
+        .then(() =>
+          console.log(
+            `whatsapp wellcome sent for ${patient.patient_full_name}`,
+          ),
+        )
+        .catch(async (error) => {
+          if (error instanceof Response) {
+            return console.error(
+              `Error sending whatsapp wellcome for ${patient.patient_full_name}`,
+              error.statusText,
+            );
+          }
+
+          console.error(
+            `Error sending whatsapp wellcome for ${patient.patient_full_name}`,
+            'Erro desconhecido',
+          );
+        });
+    } catch (error) {
+      console.error('Error sending WhatsApp Wellcome message', error);
     }
   }
 }
