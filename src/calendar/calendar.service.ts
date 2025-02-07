@@ -260,7 +260,7 @@ export class CalendarService {
       };
 
       fetch(
-        `${wppBotUrl}/message/text?key=nutricionist_${calendar_clinic_id}`,
+        `${wppBotUrl}/message/text?key=odonto_${calendar_clinic_id}`,
         {
           method: 'POST',
           headers: {

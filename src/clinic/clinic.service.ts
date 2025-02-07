@@ -408,7 +408,7 @@ export class ClinicService {
         message: message.replaceAll('[Patient]', firstName),
       };
 
-      fetch(`${wppBotUrl}/message/text?key=nutricionist_${patient.clinic}`, {
+      fetch(`${wppBotUrl}/message/text?key=odonto_${patient.clinic}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
