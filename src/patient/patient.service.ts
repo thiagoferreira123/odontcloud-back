@@ -263,8 +263,6 @@ export class PatientService {
         message: message.replaceAll('[Paciente]', firstName),
       };
 
-      console.log(postData);
-
       fetch(
         `${wppBotUrl}/message/text?key=odonto_${patient.patient_clinic_id}`,
         {
