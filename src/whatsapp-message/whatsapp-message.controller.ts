@@ -25,7 +25,7 @@ export class WhatsappMessageController {
   @Post()
   create(
     @Body() createWhatsappMessageDto: CreateWhatsappMessageDto,
-    @ClinicDecorator('id') whatsapp_message_clinic_id: string,
+    @ClinicDecorator('clinic_id') whatsapp_message_clinic_id: string,
   ): Promise<WhatsappMessage> {
     return this.whatsappMessageService.create(
       createWhatsappMessageDto,
@@ -37,7 +37,7 @@ export class WhatsappMessageController {
   @Post('send-appointment-cancelation/:patientId')
   sendAppointmentCancelationByProfessionalAlert(
     @Param('patientId') patientId: string,
-    @ClinicDecorator('id') whatsapp_message_clinic_id: string,
+    @ClinicDecorator('clinic_id') whatsapp_message_clinic_id: string,
   ) {
     return this.whatsappMessageService.sendAppointmentCancelationByProfessionalAlert(
       patientId,
@@ -48,7 +48,7 @@ export class WhatsappMessageController {
   @UseGuards(AuthGuard)
   @Get('')
   findOneByclinicId(
-    @ClinicDecorator('id') clinicId: string,
+    @ClinicDecorator('clinic_id') clinicId: string,
   ): Promise<WhatsappMessage> {
     return this.whatsappMessageService.findOneByclinicId(clinicId);
   }

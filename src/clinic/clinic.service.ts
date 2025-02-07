@@ -106,6 +106,7 @@ export class ClinicService {
   async findOne(clinic_id: string): Promise<Clinic> {
     const clinic = await this.clinicRepository.findOne({
       where: { clinic_id },
+      relations: ['whatsappConfigurations'],
     });
     if (!clinic) {
       throw new NotFoundException(`Clinic with ID "${clinic_id}" not found`);
