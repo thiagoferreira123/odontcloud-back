@@ -14,11 +14,6 @@ export class CreateWhatsappMessageDto {
   @IsOptional()
   @IsString()
   @MaxLength(500)
-  whatsapp_message_welcome: string;
-
-  @IsOptional()
-  @IsString()
-  @MaxLength(500)
   whatsapp_message_appointment_cancellation: string;
 
   @IsOptional()

@@ -155,7 +155,6 @@ export class WhatsappMessageService {
     await this.whatsappMessageRepository.update(messages.whatsapp_message_id, {
       whatsapp_message_happy_birthday: '',
       whatsapp_message_appointment_scheduling: '',
-      whatsapp_message_welcome: '',
       whatsapp_message_appointment_cancellation: '',
       whatsapp_message_appointment_confirmation: '',
     });

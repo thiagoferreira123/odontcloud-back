@@ -22,9 +22,6 @@ export class WhatsappMessage {
   whatsapp_message_appointment_scheduling: string;
 
   @Column('text')
-  whatsapp_message_welcome: string;
-
-  @Column('text')
   whatsapp_message_appointment_cancellation: string;
 
   @Column('text')
