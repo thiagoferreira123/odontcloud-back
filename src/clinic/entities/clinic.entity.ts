@@ -14,12 +14,14 @@ import { Patient } from 'src/patient/entities/patient.entity';
 
 @Entity('clinic')
 export class Clinic {
-  @PrimaryColumn('varchar', { length: 26 })
+  @PrimaryColumn()
   clinic_id: string;
 
   @BeforeInsert()
-  generateId(): void {
-    this.clinic_id = ulid();
+  generateUlid() {
+    if (!this.clinic_id) {
+      this.clinic_id = ulid();
+    }
   }
 
   @Column({ unique: true })
