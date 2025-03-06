@@ -175,10 +175,8 @@ export class ClinicService {
     });
 
     if (!clinic) {
-      clinic = await this.clinicRepository.findOneBy({
-        clinic_email,
-      });
-
+      // Caso necessário, repete a busca ou trate conforme sua lógica
+      clinic = await this.clinicRepository.findOneBy({ clinic_email });
       if (!clinic)
         throw new UnauthorizedException('E-mail e/ou senha incorretos.');
     }
@@ -189,10 +187,10 @@ export class ClinicService {
 
     const { accessToken } = this.createToken(clinic);
 
-    const clinicInfo: Clinic = {
-      ...clinic,
-      clinic_password: undefined,
-    };
+    // Cria uma nova instância para garantir que os métodos da classe sejam mantidos
+    const clinicInfo = new Clinic();
+    Object.assign(clinicInfo, clinic);
+    clinicInfo.clinic_password = undefined;
 
     return { accessToken, clinic: clinicInfo };
   }
