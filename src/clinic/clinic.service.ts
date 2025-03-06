@@ -90,14 +90,15 @@ export class ClinicService {
       throw new ConflictException('email already in use');
     }
 
+    // Realiza o hash da senha
     clinicDetails.clinic_password = await argon2.hash(
       clinicDetails.clinic_password,
     );
 
-    const clinic = await this.clinicRepository.save(clinicDetails);
+    const clinicInstance = this.clinicRepository.create(clinicDetails);
+    const clinic = await this.clinicRepository.save(clinicInstance);
 
     const { accessToken } = this.createToken(clinic);
-
     const clinicInfo = { ...clinic, senha: undefined };
 
     return { accessToken, clinic: clinicInfo };
