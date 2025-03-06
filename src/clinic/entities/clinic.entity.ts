@@ -1,19 +1,26 @@
 import { Exclude } from 'class-transformer';
 import {
   Entity,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
   OneToOne,
   OneToMany,
+  BeforeInsert,
 } from 'typeorm';
+import { ulid } from 'ulid';
 import { Subscription } from '../../subscription/entities/subscription.entity';
 import { WhatsappMessage } from 'src/whatsapp-message/entities/whatsapp-message.entity';
 import { Patient } from 'src/patient/entities/patient.entity';
 
 @Entity('clinic')
 export class Clinic {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn('varchar', { length: 26 })
   clinic_id: string;
+
+  @BeforeInsert()
+  generateId(): void {
+    this.clinic_id = ulid();
+  }
 
   @Column({ unique: true })
   clinic_email: string;
@@ -65,29 +72,18 @@ export class Clinic {
   @Column({ nullable: true })
   clinic_stripe_customer_id?: string;
 
-  // @OneToOne(() => Subscription, {
-  //   cascade: true,
-  //   eager: true,
-  // })
-  // @JoinColumn()
-  // subscription: Subscription;
-
   @OneToOne(() => Subscription, (subscription) => subscription.clinic, {
     eager: true,
-  }) // specify inverse side as a second parameter
+  })
   subscription: Subscription;
 
   @OneToMany(
     () => WhatsappMessage,
     (whatsappConfiguration) => whatsappConfiguration.clinic,
-    {
-      eager: false,
-    },
+    { eager: false },
   )
   whatsappConfigurations: WhatsappMessage[];
 
-  @OneToMany(() => Patient, (patient) => patient.clinic, {
-    eager: false,
-  })
+  @OneToMany(() => Patient, (patient) => patient.clinic, { eager: false })
   patients: Patient[];
 }
