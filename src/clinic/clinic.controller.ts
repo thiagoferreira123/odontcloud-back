@@ -132,8 +132,9 @@ export class ClinicController {
     return await this.s3ClinicSignatureervice.deleteFile(params.url);
   }
 
-  @Delete(':clinic_id')
-  remove(@Param('clinic_id') clinic_id: string): Promise<void> {
+  @UseGuards(AuthGuard)
+  @Delete()
+  remove(@ClinicDecorator('clinic_id') clinic_id: string): Promise<void> {
     return this.clinicService.remove(clinic_id);
   }
 

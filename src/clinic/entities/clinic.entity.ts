@@ -74,6 +74,9 @@ export class Clinic {
   @Column({ nullable: true })
   clinic_stripe_customer_id?: string;
 
+  @Column({ nullable: true })
+  clinic_primary_color?: string;
+
   @OneToOne(() => Subscription, (subscription) => subscription.clinic, {
     eager: true,
   })

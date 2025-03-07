@@ -7,9 +7,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
-
   <style>
+    body {
+      font-family: 'Mulish', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: #777;
+      margin: 0px 30px 30px 30px;
+    }
+
     .large-title {
       font-family: 'Mulish', sans-serif;
       font-size: 16px;
@@ -61,14 +67,14 @@
     .circle {
       height: 6px;
       width: 6px;
-      background-color: #0eb0f2;
+      background-color: {{clinic.clinic_primary_color}};
       border-radius: 50%;
       display: inline-block;
       margin-right: 5px;
     }
 
     .bg-primary {
-      background-color: #0eb0f2;
+      background-color: {{clinic.clinic_primary_color}};
     }
 
     .text-white {
@@ -84,15 +90,6 @@
       padding: 10px;
       padding-bottom: 1px;
       border-radius: 8px;
-    }
-    body {
-      font-family: 'Mulish', sans-serif;
-      margin-bottom: 100px;
-      margin-top: 100px;
-      font-size: 12px;
-      font-weight: 400;
-      color: #777;
-      margin: 30px
     }
 
     .footer {
@@ -151,9 +148,9 @@
 
 <body>
   {{!-- Logo marca do local de atendimento --}}
-  <div style="display: flex; justify-content: center; align-items: center; height: 100%; margin-top:25px">
+  <div style="display: flex; justify-content: center; align-items: center; height: 100%">
     {{#if clinic.clinic_logo_link}}
-      <img src='{{clinic.clinic_logo_link}}' height='85px' />
+      <img src='{{clinic.clinic_logo_link}}' height='64px' />
     {{else}}
       <span class='large-title'>{{clinic.clinic_full_name}}</span>
     {{/if}}
@@ -316,18 +313,6 @@
   <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; margin-top:25px">
     <span class="large-title">Valor total:</span>
     <span class="large-title">{{parseToBrValue budget.budget_value}}</span>
-  </div>
-
-  <br><br>
-
-  <div class="footer" style="display: flex; flex-direction: column; justify-content-center; align-items: center; text-align: center">
-    <div style='width: 100%; floating:right'>
-      <div class="assinatura-bx"></div>
-    </div>
-    <div>___________________________</div>
-    <div style="text-align: center">De acordo - assinatura paciente <br>
-      {{parseDateObjToBrDate budget.budget_date_creation}}
-    </div>
   </div>
 </body>
 

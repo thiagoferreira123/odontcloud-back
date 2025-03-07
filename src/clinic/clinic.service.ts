@@ -337,6 +337,8 @@ export class ClinicService {
       throw new HttpException('Clinic not found', HttpStatus.NOT_FOUND);
     }
 
+    clinic.clinic_primary_color = clinic.clinic_primary_color ?? '#0eb0f2';
+
     // const clinic_logo_link = clinic.clinic_logo_link
     //   ? clinic.clinic_logo_link
     //   : 'https://odontcloud.com.br/imagens_sitenews/logo.webp';
