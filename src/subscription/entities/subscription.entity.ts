@@ -14,9 +14,9 @@ export enum PriceNames {
 }
 
 export const priceIds = {
-  [PriceNames.MONTHLY]: 'price_1QzjiqP1MptS4e4LMU2F1hwh',
+  [PriceNames.MONTHLY]: 'price_1Qzn6WP1MptS4e4Lyuvtonj5',
   [PriceNames.SEMI_ANNUALLY]: 'price_1P8wEM09PtgHIHG79TYRC4ez',
-  [PriceNames.YEARLY]: 'price_1QzjjcP1MptS4e4LCMKzPx2Z',
+  [PriceNames.YEARLY]: 'price_1Qzn62P1MptS4e4LGckb84qc',
 };
 
 export const priceNames = {
