@@ -56,7 +56,13 @@ export class Patient {
   @Column('text', { nullable: true })
   patient_reference?: string;
 
-  @Column({ nullable: true })
+  @Column({
+    nullable: true,
+    transformer: {
+      to: (value: string) => (value ? value.replace(/\D/g, '') : value),
+      from: (value: string) => value,
+    },
+  })
   patient_phone?: string;
 
   @Column({ nullable: true })
