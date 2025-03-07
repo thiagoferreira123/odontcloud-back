@@ -77,6 +77,9 @@ export class Clinic {
   @Column({ nullable: true })
   clinic_primary_color?: string;
 
+  @Column({ default: false })
+  clinic_active_digital_wallet: boolean;
+
   @OneToOne(() => Subscription, (subscription) => subscription.clinic, {
     eager: true,
   })
